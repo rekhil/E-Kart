@@ -41,11 +41,6 @@ class SignUp extends Component {
         event.preventDefault();
     }
 
-    handleCancel = event => {
-        alert('Cancelled')
-    }
-
-
     render() {
         return (
             <form onSubmit={this.handleSignUp} >
@@ -69,10 +64,8 @@ class SignUp extends Component {
                     <input type='text' value={this.state.confirmPassword} onChange={this.handleConfirmPasswordChange}>
                     </input>
                 </div>
-                <button type='Submit'>Login</button>
-                <button onClick={this.handleCancel}>Cancel</button>
+                <button type='Submit'>Continue</button>
             </form>
-
         )
     }
 }

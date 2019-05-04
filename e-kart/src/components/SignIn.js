@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
 class SignIn extends Component {
 
@@ -27,27 +28,29 @@ class SignIn extends Component {
         event.preventDefault();
     }
 
-    handleCancel = event => {
+    handleSignUp = event => {
         alert('Cancelled')
     }
 
 
     render() {
         return (
-            <form onSubmit={this.handleSignIn}>
-                <div>
-                    <label>Email</label>
-                    <input type='text' value={this.state.email} onChange={this.handleEmailChange}>
-                    </input>
-                </div>
-                <div>
-                    <label>Password</label>
-                    <input type='text' value={this.state.password} onChange={this.handlePasswordChange}>
-                    </input>
-                </div>
-                <button type='Submit'>Login</button>
-                <button onClick={this.handleCancel}>Cancel</button>
-            </form>
+            <React.Fragment>
+                <form>
+                    <div>
+                        <label>Email</label>
+                        <input type='text' value={this.state.email} onChange={this.handleEmailChange}>
+                        </input>
+                    </div>
+                    <div>
+                        <label>Password</label>
+                        <input type='text' value={this.state.password} onChange={this.handlePasswordChange}>
+                        </input>
+                    </div>
+                    <button onClick={this.handleSignIn}>Login</button>
+                </form>
+                <Link to='/signup'>Create your E-Kart Account</Link>
+            </React.Fragment>
         )
     }
 }

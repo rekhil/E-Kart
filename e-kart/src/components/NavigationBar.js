@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom'
-import '../sharedStyle.css'
+import { Link } from 'react-router-dom';
 
 class NavigationBar extends Component {
 
@@ -25,10 +24,8 @@ class NavigationBar extends Component {
                 <Link to='/' >E-kart</Link>
                 <input type='text' value={this.state.searchText} onChange={this.changeSearchTextHandler} />
                 <button type='submit' onClick={this.onSearchSubmit} >Search</button>
-                <Link to='/'>Home</Link>
-                <Link to='/cartdetails'>My cart</Link>
+                <Link to='/cartdetails'>My Cart</Link>
                 <Link to='/signin'>Sign In</Link>
-                <Link to='/signup'>Sign Up</Link>
             </div>
         )
     }
