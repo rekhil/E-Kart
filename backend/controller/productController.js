@@ -1,4 +1,3 @@
-// Import product model
 Product = require('../models/productModel');
 
 // Handle index actions
