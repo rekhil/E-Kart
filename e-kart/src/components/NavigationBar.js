@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from "react-redux";
+import { searchProducts } from '../actions/productAction';
 
 class NavigationBar extends Component {
 
@@ -15,6 +17,7 @@ class NavigationBar extends Component {
     }
 
     onSearchSubmit = () => {
+        this.props.dispatch(searchProducts())
         this.setState({ searchText: '' })
     }
 
@@ -31,4 +34,4 @@ class NavigationBar extends Component {
     }
 }
 
-export default NavigationBar;
+export default connect()(NavigationBar);

@@ -1,9 +1,17 @@
-import React from 'react';
-import ProductItem from './ProductItem'
+import React, { Component } from 'react';
+import ProductItem from './ProductItem';
+import { connect } from 'react-redux'
 
-const ProductItemList = props => {
-    const productList = props.productList.map(product => <ProductItem key={product.productId} product={product} />)
-    return <div className='productItemList'> {productList} </div>;
+class ProductItemList extends Component {
+    render() {
+        return <div className='productItemList'> {this.props.productList.map(product => <ProductItem key={product._id} product={product} />)} </div>;
+    }
 }
 
-export default ProductItemList;
+const mapStateToProps = state => {
+    return {
+        productList: state.productsReducer
+    };
+}
+
+export default connect(mapStateToProps)(ProductItemList)
