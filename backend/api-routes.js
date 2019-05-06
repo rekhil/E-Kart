@@ -10,10 +10,7 @@ router.get('/', function (req, res) {
         });
 });
 
-
-// Import product controller
 var productController = require('./controller/productController');
-// Product routes
 router.route('/products')
     .get(productController.viewall)
     .post(productController.create);
@@ -22,6 +19,14 @@ router.route('/products/:product_id')
     .patch(productController.update)
     .put(productController.update)
     .delete(productController.delete);
+
+var dealsController = require('./controller/dealsController');
+router.route('/deals')
+    .post(dealsController.create);
+
+var categoryController = require('./controller/categoryController');
+router.route('/categories')
+    .post(categoryController.create);
 
 // Export API routes
 module.exports = router;

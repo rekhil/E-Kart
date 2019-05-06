@@ -1,31 +1,41 @@
 Product = require('../models/productModel');
+Review = require('../models/reviewModel');
+Deals = require('../models/dealsModel');
 
-// Handle index actions
 exports.viewall = function (req, res) {
-    Product.get(function (err, products) {
-        if (err) {
+    Product.find()
+        .populate('category')
+        .populate('deals')
+        .populate('review')
+        .exec(function (err, products) {
+            if (err) {
+                res.json({
+                    status: "error",
+                    message: err,
+                });
+            }
             res.json({
-                status: "error",
-                message: err,
+                status: "success",
+                message: "Products retrieved successfully",
+                data: products
             });
-        }
-        res.json({
-            status: "success",
-            message: "Products retrieved successfully",
-            data: products
         });
-    });
 };
 
-// Handle create product actions
 exports.create = function (req, res) {
     var product = new Product();
+    product.image = req.body.image;
     product.displayName = req.body.displayName;
     product.shortDesc = req.body.shortDesc;
     product.desc = req.body.desc;
-    product.category = req.body.category;
     product.price = req.body.price;
-    product.image = req.body.image;
+    product.discount = req.body.discount;
+    product.offerPrice = req.body.offerPrice;
+    product.deliveryCharge = req.body.deliveryCharge;
+    product.avgRating = req.body.avgRating;
+    product.category = req.body.category;
+    product.deals = [];
+    product.reviews = [];
     product.save(function (err) {
         if (err)
             res.json(err);
@@ -36,7 +46,6 @@ exports.create = function (req, res) {
     });
 };
 
-// Handle view product info
 exports.view = function (req, res) {
     Product.findById(req.params.product_id, function (err, product) {
         if (err)
@@ -48,18 +57,19 @@ exports.view = function (req, res) {
     });
 };
 
-// Handle update product info
 exports.update = function (req, res) {
     Product.findById(req.params.product_id, function (err, product) {
         if (err)
             res.send(err);
+        product.image = req.body.image;
         product.displayName = req.body.displayName;
         product.shortDesc = req.body.shortDesc;
         product.desc = req.body.desc;
-        product.category = req.body.category;
         product.price = req.body.price;
-        product.image = req.body.image;
-        // save the product and check for errors
+        product.discount = req.body.discount;
+        product.offerPrice = req.body.offerPrice;
+        product.deliveryCharge = req.body.deliveryCharge;
+        product.avgRating = req.body.avgRating;
         product.save(function (err) {
             if (err)
                 res.json(err);
@@ -71,7 +81,6 @@ exports.update = function (req, res) {
     });
 };
 
-// Handle delete product
 exports.delete = function (req, res) {
     Product.remove({
         _id: req.params.product_id
