@@ -3,24 +3,10 @@ Product = require('../models/productModel');
 Account = require('../models/accountModel');
 CartItem = require('../models/cartItemModel');
 
-//add new product to cart -- add cart if cart_id is null, add to cart item, update price details in cart
-//delete product from cart -- remove from cart item, update price details in cart
 //update quantity in cart -- update cart item, update price details in cart
 //get cart details by accountId, guestId
 //get distint item count from cart
 //delete cart details by accountId
-
-//accountId
-//guestId
-//productId
-//quantity
-//price
-//offerPrice
-//deliveryCharges
-
-//totalPrice
-//deliveryCharges
-//billAmount (totalPrice + deliveryCharges)
 
 exports.create = function (req, res) {
     CartItem.findOne({ 'product': req.body.productId, 'guest': req.body.guestId }, function (err, cartitem) {
@@ -87,5 +73,54 @@ exports.create = function (req, res) {
                 }
             });
         });
+    });
+};
+
+exports.delete = function (req, res) {
+    CartItem.findOne({ _id: req.params.cartId }, function (err, cartItem) {
+        if (err)
+            res.send(err);
+        if (cartItem) {
+            CartItem.deleteOne({ _id: req.params.cartId }, function (err, deleteStatus) {
+                if (err)
+                    res.send(err);
+                if (deleteStatus.deletedCount > 0) {
+                    Cart.findOne({ 'guest': cartItem.guest, items: { $elemMatch: { $in: cartItem._id } } }, function (err, cart) {
+                        if (err)
+                            res.json(err);
+                        if (cart) {
+
+                            console.log(cart)
+                            cart.items.remove(cartItem._id);
+                            //calculate price here
+                            cart.totalPrice = 1000
+                            cart.deliveryCharge = 100
+                            cart.billAmount = 1000
+                            cart.save(function (err) {
+                                if (err)
+                                    res.json(err);
+                                res.json({
+                                    status: "success",
+                                    message: 'Item removed from cart!',
+                                    data: cart
+                                });
+                            });
+                        }
+                    });
+                } else {
+                    res.json({
+                        status: "failed",
+                        message: 'Cannot delete',
+                        data: req.params.product_id
+                    });
+                }
+            });
+        } else {
+            res.json({
+                status: "failed",
+                message: 'No data found',
+                data: req.params.product_id
+            });
+        }
     });
 };

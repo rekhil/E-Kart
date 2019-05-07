@@ -33,6 +33,8 @@ router.route('/categories')
 var cartController = require('./controller/cartController');
 router.route('/cart')
     .post(cartController.create);
+    router.route('/cart/:cartId')
+        .delete(cartController.delete);
 
 var wishlistController = require('./controller/wishlistController');
 router.route('/wishlist')
