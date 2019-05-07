@@ -40,6 +40,7 @@ exports.create = function (req, res) {
         if (err)
             res.json(err);
         res.json({
+            status: "success",
             message: 'New product created!',
             data: product
         });
@@ -51,6 +52,7 @@ exports.view = function (req, res) {
         if (err)
             res.send(err);
         res.json({
+            status: "success",
             message: 'Product details retrieved',
             data: product
         });
@@ -74,6 +76,7 @@ exports.update = function (req, res) {
             if (err)
                 res.json(err);
             res.json({
+                status: "success",
                 message: 'Product Info updated',
                 data: product
             });
@@ -89,7 +92,8 @@ exports.delete = function (req, res) {
             res.send(err);
         res.json({
             status: "success",
-            message: 'Product deleted'
+            message: 'Product deleted',
+            data: req.params.product_id
         });
     });
 };

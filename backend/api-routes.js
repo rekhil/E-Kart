@@ -1,7 +1,5 @@
-// Filename: api-routes.js
-// Initialize express router
 let router = require('express').Router();
-// Set default API response
+
 router.get('/', function (req, res) {
     res.json(
         {
@@ -9,6 +7,10 @@ router.get('/', function (req, res) {
             message: 'Welcome to E-kart Rest API!'
         });
 });
+
+var accountController = require('./controller/accountController');
+router.route('/account')
+    .post(accountController.create);
 
 var productController = require('./controller/productController');
 router.route('/products')
@@ -28,5 +30,12 @@ var categoryController = require('./controller/categoryController');
 router.route('/categories')
     .post(categoryController.create);
 
-// Export API routes
+var cartController = require('./controller/cartController');
+router.route('/cart')
+    .post(cartController.create);
+
+var wishlistController = require('./controller/wishlistController');
+router.route('/wishlist')
+    .post(wishlistController.create);
+
 module.exports = router;

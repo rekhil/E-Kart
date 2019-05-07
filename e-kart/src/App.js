@@ -18,8 +18,8 @@ class App extends Component {
           <NavigationBar />
           <Switch>
             <Route exact path="/" component={Home} />
-            <Route path="/products" component={ProductItemList} />
             <Route path="/products/:id" component={ProductDetails} />
+            <Route path="/products" component={ProductItemList} />
             <Route path="/cartdetails" component={CartDetails} />
             <Route path="/signin" component={SignIn} />
             <Route path="/signup" component={SignUp} />
