@@ -7,6 +7,7 @@ let mongoose = require('mongoose');
 // Initialize the app
 let app = express();
 
+const passport = require("passport");
 
 // Import routes
 let apiRoutes = require("./api-routes")
@@ -18,8 +19,11 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 
 // Connect to Mongoose and set connection variable
-mongoose.connect('mongodb://localhost/ekart');
-var db = mongoose.connection;
+const db = require("./config/keys").mongoURI;
+// Connect to MongoDB
+mongoose.connect(db, { useNewUrlParser: true })
+    .then(() => console.log("MongoDB successfully connected"))
+    .catch(err => console.log(err));
 
 // Setup server port
 var port = process.env.PORT || 8080;
@@ -29,6 +33,13 @@ app.get('/', (req, res) => res.send('Welcome to E-kart Rest API'));
 
 // Use Api routes in the App
 app.use('/api', apiRoutes)
+
+// Passport middleware
+app.use(passport.initialize());
+
+// Passport config
+require("./config/passport")(passport);
+
 
 // Launch app to listen to specified port
 app.listen(port, function () {

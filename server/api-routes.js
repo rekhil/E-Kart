@@ -9,8 +9,10 @@ router.get('/', function (req, res) {
 });
 
 var accountController = require('./controller/accountController');
-router.route('/account')
-    .post(accountController.create);
+router.route('/account/register')
+    .post(accountController.register);
+router.route('/account/login')
+    .post(accountController.login);
 
 var productController = require('./controller/productController');
 router.route('/products')
