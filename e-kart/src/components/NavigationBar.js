@@ -26,7 +26,7 @@ class NavigationBar extends Component {
                 <Link to='/' >E-kart</Link>
                 <input type='text' value={this.state.searchText} onChange={this.changeSearchTextHandler} />
                 <button type='submit' onClick={this.onSearchSubmit} >Search</button>
-                <Link to='/cartdetails'>My Cart</Link>
+                <Link to='/cart'>My Cart</Link>
                 <Link to='/wishlist'>My Wishlist</Link>
                 <Link to='/signin'>Sign In</Link>
             </div>

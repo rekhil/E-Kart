@@ -7,6 +7,7 @@ import SignIn from './components/SignIn';
 import SignUp from './components/SignUp';
 import ProductItemList from './components/ProductItemList';
 import ProductDetails from './components/ProductDetails';
+import WishlistDetails from './components/WishlistDetails';
 import './sharedStyle.css';
 
 class App extends Component {
@@ -20,7 +21,8 @@ class App extends Component {
             <Route exact path="/" component={Home} />
             <Route path="/products/:id" component={ProductDetails} />
             <Route path="/products" component={ProductItemList} />
-            <Route path="/cartdetails" component={CartDetails} />
+            <Route path="/cart" component={CartDetails} />
+            <Route path="/wishlist" component={WishlistDetails} />
             <Route path="/signin" component={SignIn} />
             <Route path="/signup" component={SignUp} />
           </Switch>

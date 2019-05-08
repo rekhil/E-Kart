@@ -33,11 +33,19 @@ router.route('/categories')
 var cartController = require('./controller/cartController');
 router.route('/cart')
     .post(cartController.create);
-    router.route('/cart/:cartId')
-        .delete(cartController.delete);
+router.route('/cart/:guestId/count')
+    .get(cartController.viewCount);
+router.route('/cart/:guestId')
+    .get(cartController.view);
+router.route('/cartitem/:cartItemId')
+    .delete(cartController.delete);
+router.route('/cartitem/:cartItemId')
+    .post(cartController.update);
 
 var wishlistController = require('./controller/wishlistController');
 router.route('/wishlist')
     .post(wishlistController.create);
+router.route('/wishlist/:accountId')
+    .get(wishlistController.view);
 
 module.exports = router;

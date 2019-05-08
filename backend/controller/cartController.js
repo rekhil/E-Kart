@@ -4,9 +4,7 @@ Account = require('../models/accountModel');
 CartItem = require('../models/cartItemModel');
 
 //update quantity in cart -- update cart item, update price details in cart
-//get cart details by accountId, guestId
 //get distint item count from cart
-//delete cart details by accountId
 
 exports.create = function (req, res) {
     CartItem.findOne({ 'product': req.body.productId, 'guest': req.body.guestId }, function (err, cartitem) {
@@ -77,11 +75,11 @@ exports.create = function (req, res) {
 };
 
 exports.delete = function (req, res) {
-    CartItem.findOne({ _id: req.params.cartId }, function (err, cartItem) {
+    CartItem.findOne({ _id: req.params.cartItemId }, function (err, cartItem) {
         if (err)
             res.send(err);
         if (cartItem) {
-            CartItem.deleteOne({ _id: req.params.cartId }, function (err, deleteStatus) {
+            CartItem.deleteOne({ _id: req.params.cartItemId }, function (err, deleteStatus) {
                 if (err)
                     res.send(err);
                 if (deleteStatus.deletedCount > 0) {
@@ -111,7 +109,7 @@ exports.delete = function (req, res) {
                     res.json({
                         status: "failed",
                         message: 'Cannot delete',
-                        data: req.params.product_id
+                        data: req.params.cartItemId
                     });
                 }
             });
@@ -119,8 +117,47 @@ exports.delete = function (req, res) {
             res.json({
                 status: "failed",
                 message: 'No data found',
-                data: req.params.product_id
+                data: req.params.cartItemId
             });
         }
     });
+};
+
+exports.view = function (req, res) {
+    Cart.findOne({ guest: req.params.guestId })
+        .populate({
+            path: 'items',
+            populate: {
+                path: 'product',
+                model: 'Product'
+            }
+        })
+        .populate('account')
+        .exec(function (err, cart) {
+            if (err)
+                res.send(err);
+            res.json({
+                status: "success",
+                message: 'cart details retrieved',
+                data: cart
+            });
+        });
+};
+
+
+exports.viewCount = function (req, res) {
+    Cart.findOne({ guest: req.params.guestId })
+        .exec(function (err, cart) {
+            if (err)
+                res.send(err);
+            res.json({
+                status: "success",
+                message: 'cart details retrieved',
+                data: cart.items ? cart.items.length : 0
+            });
+        });
+};
+
+exports.update = function (req, res) {
+
 };
