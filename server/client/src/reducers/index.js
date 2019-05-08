@@ -1,11 +1,13 @@
 import { combineReducers } from "redux"
-import authenticateReducer from './authenticateReducer';
+import authReducer from "./authReducers";
+import errorReducer from "./errorReducers";
 import productsReducer from './productsReducer';
 import accountReducer from './accountReducer';
 import cartReducer from './cartReducer';
 
 const allReducers = combineReducers({
-    authenticateReducer,
+    auth: authReducer,
+    errors: errorReducer,
     productsReducer,
     accountReducer,
     cartReducer
