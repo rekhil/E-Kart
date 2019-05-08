@@ -38,8 +38,7 @@ router.route('/cart/:guestId/count')
 router.route('/cart/:guestId')
     .get(cartController.view);
 router.route('/cartitem/:cartItemId')
-    .delete(cartController.delete);
-router.route('/cartitem/:cartItemId')
+    .delete(cartController.delete)
     .post(cartController.update);
 
 var wishlistController = require('./controller/wishlistController');

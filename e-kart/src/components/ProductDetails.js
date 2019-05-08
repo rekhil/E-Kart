@@ -33,7 +33,7 @@ class ProductDetails extends Component {
             offerPrice: this.state.product.offerPrice,
             deliveryCharge: this.state.product.deliveryCharge,
             accountId: '5cd192282ca7e93e9cba02af',
-            guestId: 'GUEST'
+            guestId: '123456'
         }
 
         axios({

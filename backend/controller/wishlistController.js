@@ -48,7 +48,7 @@ exports.create = function (req, res) {
 };
 
 exports.view = function (req, res) {
-    Wishlist.findOne({ guest: req.params.accountId })
+    Wishlist.findOne({ account: req.params.accountId })
         .populate({
             path: 'items',
             populate: {

@@ -83,28 +83,36 @@ exports.delete = function (req, res) {
                 if (err)
                     res.send(err);
                 if (deleteStatus.deletedCount > 0) {
-                    Cart.findOne({ 'guest': cartItem.guest, items: { $elemMatch: { $in: cartItem._id } } }, function (err, cart) {
-                        if (err)
-                            res.json(err);
-                        if (cart) {
+                    Cart.findOne({ 'guest': cartItem.guest, items: { $elemMatch: { $in: cartItem._id } } })
+                        .populate({
+                            path: 'items',
+                            populate: {
+                                path: 'product',
+                                model: 'Product'
+                            }
+                        })
+                        .populate('account')
+                        .exec(function (err, cart) {
 
-                            console.log(cart)
-                            cart.items.remove(cartItem._id);
-                            //calculate price here
-                            cart.totalPrice = 1000
-                            cart.deliveryCharge = 100
-                            cart.billAmount = 1000
-                            cart.save(function (err) {
-                                if (err)
-                                    res.json(err);
-                                res.json({
-                                    status: "success",
-                                    message: 'Item removed from cart!',
-                                    data: cart
+                            if (err)
+                                res.json(err);
+                            if (cart) {
+                                cart.items.remove(cartItem._id);
+                                //calculate price here
+                                cart.totalPrice = 1000
+                                cart.deliveryCharge = 100
+                                cart.billAmount = 1000
+                                cart.save(function (err) {
+                                    if (err)
+                                        res.json(err);
+                                    res.json({
+                                        status: "success",
+                                        message: 'Item removed from cart!',
+                                        data: cart
+                                    });
                                 });
-                            });
-                        }
-                    });
+                            }
+                        });
                 } else {
                     res.json({
                         status: "failed",
