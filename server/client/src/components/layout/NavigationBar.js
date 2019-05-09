@@ -75,20 +75,6 @@ class NavigationBar extends Component {
         this.props.dispatch(searchProducts())
     };
 
-    handleHomeMenuClick = event => {
-        // this.setState({ anchorEl: event.currentTarget });
-
-        this.props.history.push("/");
-    };
-
-    handleProfileMenuClick = event => {
-        // this.setState({ anchorEl: event.currentTarget });
-    };
-
-    handleCartMenuClick = event => {
-        // this.setState({ mobileMoreAnchorEl: event.currentTarget });
-    };
-
     render() {
         const { classes } = this.props;
         return (
@@ -96,7 +82,7 @@ class NavigationBar extends Component {
                 <AppBar position="static">
                     <Toolbar>
                         <Link to="/">
-                            <IconButton className={classes.homeButton} conClick={this.handleHomeMenuClick} olor="inherit" >
+                            <IconButton className={classes.homeButton} color="inherit" >
                                 <HomeIcon />
                             </IconButton>
                         </Link>
@@ -114,14 +100,14 @@ class NavigationBar extends Component {
                         <div className={classes.grow} />
                         <div className={classes.sectionDesktop}>
                             <Link to="/cart">
-                                <IconButton onClick={this.handleCartMenuClick} color="inherit">
+                                <IconButton color="inherit">
                                     <Badge badgeContent={4} color="secondary">
                                         <ShoppingCart />
                                     </Badge>
                                 </IconButton>
                             </Link>
                             <Link to="/profile">
-                                <IconButton onClick={this.handleProfileMenuClick} color="inherit">
+                                <IconButton color="inherit">
                                     <AccountCircle />
                                 </IconButton>
                             </Link>

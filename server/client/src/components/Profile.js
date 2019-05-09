@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import { loginUser } from "../actions/authActions";
+import { connect } from "react-redux";
 
 class Profile extends Component {
     render() {
@@ -35,4 +37,9 @@ class Profile extends Component {
         );
     }
 }
-export default Profile;
+const mapStateToProps = state => ({
+    auth: state.auth,
+    errors: state.errors
+});
+
+export default connect(mapStateToProps, { loginUser })(Profile);
