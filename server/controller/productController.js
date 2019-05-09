@@ -48,15 +48,19 @@ exports.create = function (req, res) {
 };
 
 exports.view = function (req, res) {
-    Product.findById(req.params.product_id, function (err, product) {
-        if (err)
-            res.send(err);
-        res.json({
-            status: "success",
-            message: 'Product details retrieved',
-            data: product
+    Product.findById(req.params.product_id)
+        .populate('category')
+        .populate('deals')
+        .populate('review')
+        .exec(function (err, product) {
+            if (err)
+                res.send(err);
+            res.json({
+                status: "success",
+                message: 'Product details retrieved',
+                data: product
+            });
         });
-    });
 };
 
 exports.update = function (req, res) {

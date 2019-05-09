@@ -14,6 +14,10 @@ import ShoppingCart from '@material-ui/icons/ShoppingCart';
 import { connect } from "react-redux";
 import { searchProducts } from '../../actions/productAction';
 import { Link } from "react-router-dom";
+import Fab from '@material-ui/core/Fab';
+import SearchIcon from '@material-ui/icons/Search';
+import { getCartCount } from '../../actions/cartAction';
+
 
 const styles = theme => ({
     root: {
@@ -41,25 +45,18 @@ const styles = theme => ({
         },
         marginRight: theme.spacing.unit * 2,
         marginLeft: 0,
-        width: '100%',
+        width: '50%',
         [theme.breakpoints.up('sm')]: {
             marginLeft: theme.spacing.unit * 3,
         },
+        height: '30px'
     },
     inputRoot: {
+        marginLeft: '1%',
+        marginTop: '5px',
         color: 'inherit',
-        width: '100%'
-    },
-    inputInput: {
-        paddingTop: theme.spacing.unit,
-        paddingRight: theme.spacing.unit,
-        paddingBottom: theme.spacing.unit,
-        paddingLeft: theme.spacing.unit * 10,
-        transition: theme.transitions.create('width'),
-        width: '100%',
-        [theme.breakpoints.up('md')]: {
-            width: 200,
-        },
+        width: '98%',
+        height: '28px'
     },
     sectionDesktop: {
         display: 'none',
@@ -67,9 +64,15 @@ const styles = theme => ({
             display: 'flex',
         },
     },
+    fab: {
+        margin: theme.spacing.unit,
+    }
 });
 
 class NavigationBar extends Component {
+    componentDidMount() {
+        this.props.dispatch(getCartCount('123456'))
+    }
 
     handleSearchProducts = event => {
         this.props.dispatch(searchProducts())
@@ -77,6 +80,7 @@ class NavigationBar extends Component {
 
     render() {
         const { classes } = this.props;
+        const cartItemCount = this.props.cartCount ? this.props.cartCount : 0;
         return (
             <div className={classes.root}>
                 <AppBar position="static">
@@ -89,19 +93,21 @@ class NavigationBar extends Component {
                         <Typography className={classes.title} variant="h6" color="inherit" noWrap> E-Kart </Typography>
                         <div className={classes.search}>
                             <InputBase
-                                onChange={this.handleSearchProducts}
-                                placeholder="Search…"
                                 classes={{
-                                    root: classes.inputRoot,
-                                    input: classes.inputInput,
+                                    root: classes.inputRoot
                                 }}
                             />
                         </div>
+                        <Link to="/products">
+                            <Fab color="primary" aria-label="Add" className={classes.fab} onClick={this.handleSearchProducts}>
+                                <SearchIcon />
+                            </Fab>
+                        </Link>
                         <div className={classes.grow} />
                         <div className={classes.sectionDesktop}>
                             <Link to="/cart">
                                 <IconButton color="inherit">
-                                    <Badge badgeContent={4} color="secondary">
+                                    <Badge badgeContent={cartItemCount} color="secondary">
                                         <ShoppingCart />
                                     </Badge>
                                 </IconButton>
@@ -123,4 +129,10 @@ NavigationBar.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(connect()(NavigationBar));
+const mapStateToProps = state => {
+    return {
+        cartCount: state.cartCountReducer.count,
+    };
+}
+
+export default withStyles(styles)(connect(mapStateToProps)(NavigationBar));

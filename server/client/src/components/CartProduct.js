@@ -12,6 +12,7 @@ import Button from '@material-ui/core/Button';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import InputBase from '@material-ui/core/InputBase';
+import { Link } from 'react-router-dom';
 
 const styles = theme => ({
     card: {
@@ -30,12 +31,23 @@ const styles = theme => ({
         flexDirection: 'column',
         width: '5%'
     },
+    price_details: {
+        margin: '20px',
+        display: 'flex',
+        flexDirection: 'column',
+        width: '40%',
+        color: 'brown'
+    },
     content: {
         flex: '1 0 auto',
     },
     cover: {
         width: 250,
     },
+    productLink: {
+        fontSize: 16,
+        color: 'blue',
+    }
 });
 
 const BootstrapInput = withStyles(theme => ({
@@ -59,7 +71,6 @@ class CartProduct extends Component {
     };
 
     componentDidMount() {
-        console.log(this.props.product)
         this.setState({
             cartItemId: this.props.product._id,
             quantity: this.props.product.quantity
@@ -67,23 +78,25 @@ class CartProduct extends Component {
     }
 
     handleRemoveCart = () => {
-        this.props.dispatch(deleteCartDetails(this.props.product._id))
+        this.props.dispatch(deleteCartDetails(this.props.product._id, '123456'))
     }
 
-    handlerSaveForLater = () => {
+    handleSaveForLater = () => {
         //call api to move item to wishlist
-        this.props.dispatch(deleteCartDetails(this.props.product._id))
+        this.props.dispatch(deleteCartDetails(this.props.product._id, '123456'))
     }
 
     handleChange = event => {
         this.setState({
             quantity: event.target.value
         }, () => {
-            this.props.dispatch(updateCartDetails(this.state))
+            this.props.dispatch(updateCartDetails(this.state, '123456'))
         });
     };
 
     render() {
+        console.log(this.props)
+        const productUrl = `/products/${this.props.product.product._id}`
         const { classes } = this.props;
         return (
             <Card className={classes.card}>
@@ -94,20 +107,23 @@ class CartProduct extends Component {
                 />
                 <div className={classes.details}>
                     <CardContent className={classes.content}>
-                        <Typography component="h6" variant="h6">
+                        <Link to={productUrl} className={classes.productLink}>
                             {this.props.product.product.displayName}
-                        </Typography>
+                        </Link>
                         <Typography variant="subtitle1" color="textSecondary">
-                            {this.props.product.product.shortDesc}
+                            {this.props.product.product.category.name}
                         </Typography>
                         <Typography component="p">
-                            Price:  {this.props.product.product.price}
+                            {this.props.product.product.shortDesc}
                         </Typography>
                     </CardContent>
                     <CardActions>
                         <Button size="small" color="primary" onClick={this.handleRemoveCart}> Remove from cart </Button>
-                        <Button size="small" color="primary" onClick={this.handlerSaveForLater}> Save for later </Button>
+                        <Button size="small" color="primary" onClick={this.handleSaveForLater}> Save for later </Button>
                     </CardActions>
+                </div >
+                <div className={classes.price_details}>
+                    ₹{this.props.product.product.price}
                 </div >
                 <div className={classes.qty_details}>
                     <Select
@@ -118,7 +134,6 @@ class CartProduct extends Component {
                         <MenuItem value={2}>2</MenuItem>
                         <MenuItem value={3}>3</MenuItem>
                         <MenuItem value={4}>4</MenuItem>
-                        <MenuItem value={5}>5</MenuItem>
                     </Select>
                 </div >
             </Card>
