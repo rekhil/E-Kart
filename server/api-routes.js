@@ -42,7 +42,7 @@ router.route('/cart/:guestId')
     .get(cartController.view);
 router.route('/cartitem/:cartItemId')
     .delete(cartController.delete)
-    .post(cartController.update);
+    .put(cartController.update);
 
 var wishlistController = require('./controller/wishlistController');
 router.route('/wishlist')

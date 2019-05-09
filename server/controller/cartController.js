@@ -167,5 +167,40 @@ exports.viewCount = function (req, res) {
 };
 
 exports.update = function (req, res) {
-
+    CartItem.findOne({ _id: req.params.cartItemId })
+        .exec(function (err, cartItem) {
+            if (err)
+                res.send(err);
+            cartItem.quantity = req.body.quantity
+            cartItem.save(function (err) {
+                if (err)
+                    res.json(err);
+                Cart.findOne({ 'guest': cartItem.guest, items: { $elemMatch: { $in: cartItem._id } } })
+                    .populate({
+                        path: 'items',
+                        populate: {
+                            path: 'product',
+                            model: 'Product'
+                        }
+                    })
+                    .populate('account')
+                    .exec(function (err, cart) {
+                        if (err)
+                            res.json(err);
+                        //calculate price here
+                        cart.totalPrice = 1000
+                        cart.deliveryCharge = 100
+                        cart.billAmount = 1000
+                        cart.save(function (err) {
+                            if (err)
+                                res.json(err);
+                            res.json({
+                                status: "success",
+                                message: 'cart updated!',
+                                data: cart
+                            });
+                        });
+                    });
+            });
+        });
 };

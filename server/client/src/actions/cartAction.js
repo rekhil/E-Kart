@@ -1,32 +1,48 @@
 import axios from "axios";
 import { conf } from '../config.js';
+import { GET_ERRORS, CART_DETAILS } from "./types";
 
-export function getCartDetails(guestId) {
-    return function (dispatch) {
-        axios({
-            method: 'GET',
-            url: `${conf.baseUrl}cart/${guestId}`,
-            headers: { 'Access-Control-Allow-Origin': '*' }
-        }).then(function (response) {
-            dispatch({ type: "CART_DETAILS", payload: response.data.data })
-        }).catch(function (error) {
-            console.log(error)
-        });
-    }
-}
+// get cart details
+export const getCartDetails = (guestId) => dispatch => {
+    axios
+        .get(`${conf.baseUrl}cart/${guestId}`)
+        .then(response => {
+            dispatch({ type: CART_DETAILS, payload: response.data.data })
+        })
+        .catch(err =>
+            dispatch({
+                type: GET_ERRORS,
+                payload: err
+            })
+        );
+};
 
-export function deleteCartDetails(cartItemId) {
-    return function (dispatch) {
-        axios({
-            method: 'DELETE',
-            url: `${conf.baseUrl}cartitem/${cartItemId}`,
-            headers: { 'Access-Control-Allow-Origin': '*' }
-        }).then(function (response) {
-            dispatch({ type: "CART_DETAILS", payload: response.data.data })
-        }).catch(function (error) {
-            console.log(error)
-        });
-    }
-}
+// delete item from cart
+export const deleteCartDetails = (cartItemId) => dispatch => {
+    axios
+        .delete(`${conf.baseUrl}cartitem/${cartItemId}`)
+        .then(response => {
+            dispatch({ type: CART_DETAILS, payload: response.data.data })
+        })
+        .catch(err =>
+            dispatch({
+                type: GET_ERRORS,
+                payload: err
+            })
+        );
+};
+
+// Update cart item quantity
+export const updateCartDetails = (cardData) => dispatch => {
+    console.log(cardData)
+    axios
+        .put(`${conf.baseUrl}cartitem/${cardData.cartItemId}`, cardData)
+        .then(response => {
+            dispatch({ type: CART_DETAILS, payload: response.data.data })
+        })
+        .catch(err =>
+            console.log(err)
+        );
+};
 
 
