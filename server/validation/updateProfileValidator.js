@@ -1,10 +1,11 @@
 const Validator = require("validator");
 const isEmpty = require("is-empty");
-module.exports = function validateRegisterInput(data) {
+module.exports = function validateUpdateProfileInput(data) {
     let errors = {};
     // Convert empty fields to an empty string so we can use validator functions
     data.name = !isEmpty(data.name) ? data.name : "";
     data.email = !isEmpty(data.email) ? data.email : "";
+    data.currentPassword = !isEmpty(data.currentPassword) ? data.currentPassword : "";
     data.password = !isEmpty(data.password) ? data.password : "";
     data.password2 = !isEmpty(data.password2) ? data.password2 : "";
     // Name checks
@@ -23,10 +24,6 @@ module.exports = function validateRegisterInput(data) {
     }
     if (Validator.isEmpty(data.password2)) {
         errors.password2 = "Confirm password field is required";
-    }
-
-    if (!Validator.isAlpha(data.name)) {
-        errors.name = "Name contains invalid character";
     }
 
     if (!Validator.isLength(data.password, { min: 6, max: 30 })) {

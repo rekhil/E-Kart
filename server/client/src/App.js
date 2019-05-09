@@ -10,6 +10,7 @@ import Navbar from './components/layout/NavigationBar';
 import Profile from './components/Profile';
 import Login from './components/auth/Login';
 import Register from './components/auth/Register';
+import EditProfile from './components/EditProfile';
 
 class App extends Component {
 
@@ -23,6 +24,7 @@ class App extends Component {
             <Route exact path="/profile" component={Profile} />
             <Route exact path="/login" component={Login} />
             <Route exact path="/register" component={Register} />
+            <Route exact path="/editprofile" component={EditProfile} />
             <Route path="/products/:id" component={ProductDetails} />
             <Route path="/products" component={ProductItemList} />
             <Route path="/cart" component={CartDetails} />

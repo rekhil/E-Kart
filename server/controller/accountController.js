@@ -6,6 +6,7 @@ const jwt = require("jsonwebtoken");
 const keys = require("../config/keys");
 const validateRegisterInput = require("../validation/registerValidator");
 const validateLoginInput = require("../validation/loginValidator");
+const validateUpdateProfileInput = require("../validation/updateProfileValidator");
 
 exports.register = function (req, res) {
     const { errors, isValid } = validateRegisterInput(req.body);
@@ -77,6 +78,42 @@ exports.login = function (req, res) {
                 return res
                     .status(400)
                     .json({ passwordincorrect: "Password incorrect" });
+            }
+        });
+    });
+};
+
+
+exports.updateProfile = function (req, res) {
+    const { errors, isValid } = validateUpdateProfileInput(req.body);
+    if (!isValid) {
+        return res.status(400).json(errors);
+    }
+    Account.findOne({ email: req.body.email }).then(account => {
+        // Check if account exists
+        if (!account) {
+            return res.status(404).json({ emailnotfound: "Account not found" });
+        }
+        // Check password
+        bcrypt.compare(req.body.currentPassword, account.password).then(isMatch => {
+            if (isMatch) {
+                account.name = req.body.name
+                account.password = req.body.password
+                // Hash password before saving in database
+                bcrypt.genSalt(10, (err, salt) => {
+                    bcrypt.hash(account.password, salt, (err, hash) => {
+                        if (err) throw err;
+                        account.password = hash;
+                        account
+                            .save()
+                            .then(account => res.json(account))
+                            .catch(err => console.log(err));
+                    });
+                });
+            } else {
+                return res
+                    .status(400)
+                    .json({ currentPassword: "Current password incorrect" });
             }
         });
     });

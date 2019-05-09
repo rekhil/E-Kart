@@ -9,8 +9,9 @@ router.get('/', function (req, res) {
 });
 
 var accountController = require('./controller/accountController');
-router.route('/account/register')
-    .post(accountController.register);
+router.route('/account/profile')
+    .post(accountController.register)
+    .put(accountController.updateProfile);
 router.route('/account/login')
     .post(accountController.login);
 
