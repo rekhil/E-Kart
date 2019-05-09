@@ -6,11 +6,12 @@ import {
     SET_CURRENT_USER,
     USER_LOADING
 } from "./types";
+import { conf } from '../config.js';
 
 // Register User
 export const registerUser = (userData, history) => dispatch => {
     axios
-        .post("/api/account/register", userData)
+        .post(`${conf.baseUrl}account/register`, userData)
         .then(res => history.push("/login")) // re-direct to login on successful register
         .catch(err =>
             dispatch({
@@ -23,7 +24,7 @@ export const registerUser = (userData, history) => dispatch => {
 // Login - get user token
 export const loginUser = userData => dispatch => {
     axios
-        .post("/api/account/login", userData)
+        .post(`${conf.baseUrl}account/login`, userData)
         .then(res => {
             // Save to localStorage
             // Set token to localStorage
