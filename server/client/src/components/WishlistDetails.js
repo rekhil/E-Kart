@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import WishlistProduct from './WishlistProduct';
 import { connect } from 'react-redux';
-import axios from 'axios';
-import { conf } from '../config.js';
 import { withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
+import { getWishlistDetails } from '../actions/wishlistActions';
 
 const styles = theme => ({
     cartHeader: {
@@ -18,14 +17,6 @@ const styles = theme => ({
 });
 
 class WistlistDetails extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            wishlist: [],
-            isLoading: true
-        }
-    }
-
     componentWillReceiveProps(nextProps) {
         if (!nextProps.auth.isAuthenticated) {
             this.props.history.push("/");
@@ -36,30 +27,20 @@ class WistlistDetails extends Component {
         if (!this.props.auth.isAuthenticated) {
             this.props.history.push("/");
         }
-
-        axios.get(`${conf.baseUrl}wishlist/${this.props.auth.email}`)
-            .then(response => {
-                this.setState({
-                    wishlist: response.data.data,
-                    isLoading: false
-                });
-            })
-            .catch(error => this.setState({ error, isLoading: false }));
+        this.props.dispatch(getWishlistDetails(this.props.auth.email));
     }
 
     render() {
         const { classes } = this.props;
         var view = <div> No items in the wishlist </div >
-        if (this.state.isLoading) {
-            view = <div> Loading </div >
-        } else if (!this.state.isLoading && this.state.wishlist && this.state.wishlist.items) {
+        if (this.props.wishlist && this.props.wishlist.items) {
             view =
                 (<div>
                     <Card className={classes.card}>
                         <div className={classes.cartHeader}> <b> Wishlist </b></div >
                     </Card>
                     <div>
-                        {this.state.wishlist.items.map(w => <WishlistProduct key={w._id} product={w} />)}
+                        {this.props.wishlist.items.map(w => <WishlistProduct key={w._id} product={w} wishListId={this.props.wishlist._id} />)}
                     </div>
                 </div>)
         }
@@ -69,7 +50,8 @@ class WistlistDetails extends Component {
 const mapStateToProps = state => {
     return {
         auth: state.auth,
-        errors: state.errors
+        errors: state.errors,
+        wishlist: state.wishlistReducer
     };
 }
 

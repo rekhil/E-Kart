@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
-import Img from 'react-image';
 import { connect } from "react-redux";
-import { deleteCartDetails, updateCartDetails } from '../actions/cartAction';
-import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -10,10 +7,8 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
 import CardActions from '@material-ui/core/CardActions';
 import Button from '@material-ui/core/Button';
-import MenuItem from '@material-ui/core/MenuItem';
-import Select from '@material-ui/core/Select';
-import InputBase from '@material-ui/core/InputBase';
 import { Link } from 'react-router-dom';
+import { deleteWishlistDetails } from '../actions/wishlistActions';
 
 const styles = theme => ({
     card: {
@@ -25,19 +20,6 @@ const styles = theme => ({
         display: 'flex',
         flexDirection: 'column',
         width: '100%'
-    },
-    qty_details: {
-        margin: '20px',
-        display: 'flex',
-        flexDirection: 'column',
-        width: '5%'
-    },
-    price_details: {
-        margin: '20px',
-        display: 'flex',
-        flexDirection: 'column',
-        width: '40%',
-        color: 'brown'
     },
     content: {
         flex: '1 0 auto',
@@ -51,28 +33,14 @@ const styles = theme => ({
     }
 });
 
-const BootstrapInput = withStyles(theme => ({
-    input: {
-        borderRadius: 4,
-        position: 'relative',
-        backgroundColor: theme.palette.background.paper,
-        border: '1px solid #ced4da',
-        fontSize: 12,
-        width: 'auto',
-        padding: '5px 20px 5px 15px',
-        transition: theme.transitions.create(['border-color', 'box-shadow']),
-    },
-}))(InputBase);
-
-
-
-
 class WishlistProduct extends Component {
 
     handleRemoveFromWishlist = () => {
+        this.props.dispatch(deleteWishlistDetails(this.props.wishListId, this.props.product._id))
     }
 
     handleAddToCart = () => {
+
     }
 
     render() {
@@ -115,14 +83,6 @@ class WishlistProduct extends Component {
                 </div >
             </Card>
         )
-        // return (
-        //     <div className='productItem'>
-        //         <Img src={this.props.product.image} />
-        //         <span>
-        //             {this.props.product.displayName}
-        //         </span >
-        //     </div >
-        // )
     }
 }
 

@@ -50,12 +50,10 @@ class CartDetails extends Component {
 
     render() {
         const { classes } = this.props;
-
         var view = <div> No items in the cart </div >
 
         if (this.props.cart && this.props.cart.items) {
-            this.props.cart.billAmount = this.props.cart.items
-
+            var totalDeliveryCharge = 0
             this.props.cart.billAmount = 0;
             this.props.cart.items.forEach(element => {
                 if (element && element.product && element.product.price && element.product.price > 0) {
@@ -65,7 +63,13 @@ class CartDetails extends Component {
                         this.props.cart.billAmount += (parseFloat(element.product.price) * element.quantity)
                     }
                 }
+                if (element && element.product && element.product.deliveryCharge && element.product.deliveryCharge > 0) {
+                    totalDeliveryCharge += parseFloat(element.product.deliveryCharge)
+                }
             });
+
+            if (this.props.cart.billAmount && this.props.cart.billAmount > 0 && this.props.cart.billAmount <= 1000)
+                this.props.cart.billAmount += parseFloat(totalDeliveryCharge)
 
             view =
                 (<div>
@@ -81,8 +85,7 @@ class CartDetails extends Component {
                         <div className={classes.emptyDiv} />
                         <div className={classes.subtotal_details}><b>Subtotal ({this.props.cart.items.length} items): ₹{this.props.cart.billAmount.toFixed(2)} </b></div >
                         <Button variant="contained" color="primary" className={classes.button}>
-                            Place Order
-                </Button>
+                            Checkout </Button>
                     </Card>
                 </div>)
         }

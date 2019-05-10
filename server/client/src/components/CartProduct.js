@@ -117,15 +117,14 @@ class CartProduct extends Component {
                         <Link to={productUrl} className={classes.productLink}>
                             {this.props.product.product.displayName}
                         </Link>
-                        <Typography variant="subtitle1" color="textSecondary">
-                            {this.props.product.product.category.name}
-                        </Typography>
-                        <Typography component="p">
-                            {this.props.product.product.shortDesc}
-                        </Typography>
-                        <Typography component="p">
-                            {priceText}
-                        </Typography>
+                        <Typography variant="subtitle1" color="textSecondary">{this.props.product.product.category.name}</Typography>
+                        <Typography component="p">{this.props.product.product.shortDesc}</Typography>
+                        <Typography component="p">{priceText}</Typography>
+                        {
+                            this.props.product.product.deliveryCharge ?
+                                <Typography component="p">Delivery Charges: {this.props.product.product.deliveryCharge}</Typography>
+                                : null
+                        }
                     </CardContent>
                     <CardActions>
                         <Button size="small" color="primary" onClick={this.handleRemoveCart}> Remove from cart </Button>

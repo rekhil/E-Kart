@@ -47,6 +47,8 @@ router.route('/cartitem/:cartItemId')
 var wishlistController = require('./controller/wishlistController');
 router.route('/wishlist')
     .post(wishlistController.create);
+router.route('/wishlist/:wishlistId/:productId')
+    .delete(wishlistController.delete);
 router.route('/wishlist/:email')
     .get(wishlistController.view);
 
