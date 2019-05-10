@@ -1,6 +1,5 @@
 Cart = require('../models/cartModel');
 Product = require('../models/productModel');
-Account = require('../models/accountModel');
 CartItem = require('../models/cartItemModel');
 Category = require('../models/categoryModel');
 
@@ -40,7 +39,6 @@ exports.create = function (req, res) {
                         }
                     }
                 })
-                .populate('account')
                 .exec(function (err, cart) {
                     if (err)
                         res.json(err);
@@ -90,7 +88,6 @@ exports.create = function (req, res) {
                                             }
                                         }
                                     })
-                                    .populate('account')
                                     .exec(function (err, cartResponse) {
                                         if (err)
                                             res.json(err);
@@ -129,7 +126,6 @@ exports.delete = function (req, res) {
                                 }
                             }
                         })
-                        .populate('account')
                         .exec(function (err, cart) {
 
                             if (err)
@@ -182,7 +178,6 @@ exports.view = function (req, res) {
                 }
             }
         })
-        .populate('account')
         .exec(function (err, cart) {
             if (err)
                 res.send(err);
@@ -200,7 +195,6 @@ exports.viewCount = function (req, res) {
         .exec(function (err, cart) {
             if (err)
                 res.send(err);
-            console.log(cart)
             res.json({
                 status: "success",
                 message: 'cart details retrieved',
@@ -230,7 +224,6 @@ exports.update = function (req, res) {
                             }
                         }
                     })
-                    .populate('account')
                     .exec(function (err, cart) {
                         if (err)
                             res.json(err);

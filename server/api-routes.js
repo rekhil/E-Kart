@@ -47,7 +47,7 @@ router.route('/cartitem/:cartItemId')
 var wishlistController = require('./controller/wishlistController');
 router.route('/wishlist')
     .post(wishlistController.create);
-router.route('/wishlist/:accountId')
+router.route('/wishlist/:email')
     .get(wishlistController.view);
 
 module.exports = router;

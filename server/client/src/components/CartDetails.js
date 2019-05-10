@@ -50,9 +50,25 @@ class CartDetails extends Component {
 
     render() {
         const { classes } = this.props;
-        var view = this.props.cart && this.props.cart.items ?
-            (
-                <div>
+
+        var view = <div> No items in the cart </div >
+
+        if (this.props.cart && this.props.cart.items) {
+            this.props.cart.billAmount = this.props.cart.items
+
+            this.props.cart.billAmount = 0;
+            this.props.cart.items.forEach(element => {
+                if (element && element.product && element.product.price && element.product.price > 0) {
+                    if (element.product.discount && element.product.discount > 0) {
+                        this.props.cart.billAmount += ((parseFloat(element.product.price) - (parseFloat(element.product.price) * (parseFloat(element.product.discount) / 100))) * element.quantity)
+                    } else {
+                        this.props.cart.billAmount += (parseFloat(element.product.price) * element.quantity)
+                    }
+                }
+            });
+
+            view =
+                (<div>
                     <Card className={classes.card}>
                         <div className={classes.cartHeader}> <b>Shopping Cart </b></div >
                         <div className={classes.price_details}>Price</div >
@@ -63,16 +79,15 @@ class CartDetails extends Component {
                     </div>
                     <Card className={classes.card}>
                         <div className={classes.emptyDiv} />
-                        <div className={classes.subtotal_details}>Subtotal ({this.props.cart.items.length} items): ₹{this.props.cart.billAmount} </div >
+                        <div className={classes.subtotal_details}><b>Subtotal ({this.props.cart.items.length} items): ₹{this.props.cart.billAmount.toFixed(2)} </b></div >
                         <Button variant="contained" color="primary" className={classes.button}>
                             Place Order
-                        </Button>
+                </Button>
                     </Card>
-                </div>
-            )
-            : (<div> No items in the cart </div >)
+                </div>)
+        }
 
-        return view; 
+        return view;
     }
 }
 

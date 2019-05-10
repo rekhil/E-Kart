@@ -41,6 +41,14 @@ class ProductItem extends Component {
         const { classes } = this.props;
         const productUrl = `/products/${this.props.product._id}`
 
+        var priceText = `MRP: ₹${this.props.product.price.toFixed(2)}`
+        this.props.product.offerPrice = this.props.product.price.toFixed(2);
+        if (this.props.product.discount && this.props.product.discount > 0) {
+            priceText = `MRP: ₹${this.props.product.price.toFixed(2)}  Discount: ${this.props.product.discount}%`
+            this.props.product.offerPrice = (parseFloat(this.props.product.price) -
+                (parseFloat(this.props.product.price) * (parseFloat(this.props.product.discount) / 100))).toFixed(2);
+        }
+
         return (
             <Card className={classes.card}>
                 <CardMedia
@@ -60,7 +68,10 @@ class ProductItem extends Component {
                             {this.props.product.shortDesc}
                         </Typography>
                         <Typography component="p">
-                            Price: ₹{this.props.product.price}
+                            {priceText}
+                        </Typography>
+                        <Typography component="p">
+                            Price: ₹{this.props.product.offerPrice}
                         </Typography>
                     </CardContent>
                     <CardActions>

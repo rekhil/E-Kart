@@ -1,15 +1,14 @@
 Wishlist = require('../models/wishlistModel');
 Product = require('../models/productModel');
-Account = require('../models/accountModel');
 
 exports.create = function (req, res) {
-    Wishlist.findOne({ 'account': req.body.accountId }, function (err, wishlist) {
+    Wishlist.findOne({ 'email': req.body.email }, function (err, wishlist) {
         if (err)
             res.json(err);
         if (!wishlist) {
             wishlist = new Wishlist();
             wishlist.items.push(req.body.productId)
-            wishlist.account = req.body.accountId
+            wishlist.email = req.body.email
             wishlist.save(function (err) {
                 if (err)
                     res.json(err);
@@ -21,7 +20,7 @@ exports.create = function (req, res) {
             });
         } else {
             ~
-                Wishlist.findOne({ 'account': req.body.accountId, items: { $elemMatch: { $in: req.body.productId } } }, function (err, wishlistItem) {
+                Wishlist.findOne({ 'email': req.body.email, items: { $elemMatch: { $in: req.body.productId } } }, function (err, wishlistItem) {
                     if (err)
                         res.json(err);
                     if (!wishlistItem) {
@@ -48,7 +47,7 @@ exports.create = function (req, res) {
 };
 
 exports.view = function (req, res) {
-    Wishlist.findOne({ account: req.params.accountId })
+    Wishlist.findOne({ email: req.params.email })
         .populate({
             path: 'items',
             populate: {
@@ -56,7 +55,6 @@ exports.view = function (req, res) {
                 model: 'Product'
             }
         })
-        .populate('account')
         .exec(function (err, wishlist) {
             if (err)
                 res.send(err);

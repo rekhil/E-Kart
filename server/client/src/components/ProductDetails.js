@@ -90,7 +90,7 @@ class ProductDetails extends Component {
             price: this.state.product.price,
             offerPrice: this.state.product.offerPrice,
             deliveryCharge: this.state.product.deliveryCharge,
-            accountId: '5cd192282ca7e93e9cba02af',
+            accountId: this.props.auth.isAuthenticated ? this.props.auth.email : null,
             guestId: '123456'
         }
 
@@ -100,7 +100,7 @@ class ProductDetails extends Component {
     handleAddToWishList = () => {
         const data = {
             productId: this.state.product._id,
-            accountId: '5cd192282ca7e93e9cba02af'
+            email: this.props.auth.email
         }
 
         axios({
@@ -121,53 +121,70 @@ class ProductDetails extends Component {
 
     render() {
         const { classes } = this.props;
+        var view = (<div> No Data Found </div >)
 
-        var view = !this.state.isLoading ?
-            (
-                <Card className={classes.card}>
-                    <CardMedia
-                        className={classes.cover}
-                        image={this.state.product.image}
-                        title={this.state.product.displayName} />
-                    <div className={classes.details}>
-                        <CardContent className={classes.content}>
-                            <label className={classes.productName}>
-                                {this.state.product.displayName}
-                            </label>
-                            <Typography variant="subtitle1" color="textSecondary">
-                                {this.state.product.category.name}
-                            </Typography>
-                            <Typography component="p">
-                                {this.state.product.shortDesc}
-                            </Typography>
-                            <Typography component="p">
-                                {this.state.product.desc}
-                            </Typography>
-                        </CardContent>
-                    </div >
-                    <div className={classes.right_portion}>
-                        <Card className={classes.card}>
-                            <div className={classes.details}>
-                                <div className={classes.card}>
-                                    <Typography variant="subtitle1" color="textSecondary">Quantity</Typography>
-                                    <Select
-                                        value={this.state.quantity}
-                                        onChange={this.handleChange}
-                                        input={<BootstrapInput name="quantity" id="quantity-customized-select" />}>
-                                        <MenuItem value={1}>1</MenuItem>
-                                        <MenuItem value={2}>2</MenuItem>
-                                        <MenuItem value={3}>3</MenuItem>
-                                        <MenuItem value={4}>4</MenuItem>
-                                    </Select>
-                                </div>
-                                <Button variant="contained" color="primary" className={classes.button} onClick={this.handleAddToCart}>Add to cart</Button>
-                                <Button variant="contained" color="primary" className={classes.button} onClick={this.handleAddToWishList}>Add to wishlist</Button>
-                            </div >
-                        </Card>
-                    </div >
-                </Card>)
-            : (<div> No Data Found </div >)
+        if (!this.state.isLoading) {
 
+            var priceText = `MRP: ₹${this.state.product.price.toFixed(2)}`
+            var offerPrice = this.state.product.price.toFixed(2);
+            if (this.state.product.discount && this.state.product.discount > 0) {
+                priceText = `MRP: ₹${this.state.product.price.toFixed(2)}  Discount: ${this.state.product.discount}%`
+                offerPrice = (parseFloat(this.state.product.price) -
+                    (parseFloat(this.state.product.price) * (parseFloat(this.state.product.discount) / 100))).toFixed(2);
+            }
+
+            view =
+                (
+                    <Card className={classes.card}>
+                        <CardMedia
+                            className={classes.cover}
+                            image={this.state.product.image}
+                            title={this.state.product.displayName} />
+                        <div className={classes.details}>
+                            <CardContent className={classes.content}>
+                                <label className={classes.productName}>
+                                    {this.state.product.displayName}
+                                </label>
+                                <Typography variant="subtitle1" color="textSecondary">
+                                    {this.state.product.category.name}
+                                </Typography>
+                                <Typography component="p">
+                                    {this.state.product.shortDesc}
+                                </Typography>
+                                <Typography component="p">
+                                    {this.state.product.desc}
+                                </Typography>
+                                <Typography component="p">
+                                    {priceText}
+                                </Typography>
+                                <Typography component="p">
+                                    Price: ₹{offerPrice}
+                                </Typography>
+                            </CardContent>
+                        </div >
+                        <div className={classes.right_portion}>
+                            <Card className={classes.card}>
+                                <div className={classes.details}>
+                                    <div className={classes.card}>
+                                        <Typography variant="subtitle1" color="textSecondary">Quantity</Typography>
+                                        <Select
+                                            value={this.state.quantity}
+                                            onChange={this.handleChange}
+                                            input={<BootstrapInput name="quantity" id="quantity-customized-select" />}>
+                                            <MenuItem value={1}>1</MenuItem>
+                                            <MenuItem value={2}>2</MenuItem>
+                                            <MenuItem value={3}>3</MenuItem>
+                                            <MenuItem value={4}>4</MenuItem>
+                                        </Select>
+                                    </div>
+                                    <Button variant="contained" color="primary" className={classes.button} onClick={this.handleAddToCart}>Add to cart</Button>
+                                    {this.props.auth.isAuthenticated ? <Button variant="contained" color="primary" className={classes.button} onClick={this.handleAddToWishList}>Add to wishlist</Button> : null}
+                                </div >
+                            </Card>
+                        </div >
+                    </Card>
+                )
+        }
         return view;
     }
 }

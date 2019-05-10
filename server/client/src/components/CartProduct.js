@@ -95,9 +95,16 @@ class CartProduct extends Component {
     };
 
     render() {
-        console.log(this.props)
         const productUrl = `/products/${this.props.product.product._id}`
         const { classes } = this.props;
+        var priceText = `MRP: ₹${this.props.product.product.price.toFixed(2)}`
+        this.props.product.product.offerPrice = this.props.product.product.price.toFixed(2);
+        if (this.props.product.product.discount && this.props.product.product.discount > 0) {
+            priceText = `MRP: ₹${this.props.product.product.price.toFixed(2)}  Discount: ${this.props.product.product.discount}%`
+            this.props.product.product.offerPrice = (parseFloat(this.props.product.product.price) -
+                (parseFloat(this.props.product.product.price) * (parseFloat(this.props.product.product.discount) / 100))).toFixed(2);
+        }
+
         return (
             <Card className={classes.card}>
                 <CardMedia
@@ -116,6 +123,9 @@ class CartProduct extends Component {
                         <Typography component="p">
                             {this.props.product.product.shortDesc}
                         </Typography>
+                        <Typography component="p">
+                            {priceText}
+                        </Typography>
                     </CardContent>
                     <CardActions>
                         <Button size="small" color="primary" onClick={this.handleRemoveCart}> Remove from cart </Button>
@@ -123,7 +133,7 @@ class CartProduct extends Component {
                     </CardActions>
                 </div >
                 <div className={classes.price_details}>
-                    ₹{this.props.product.product.price}
+                    ₹{this.props.product.product.offerPrice}
                 </div >
                 <div className={classes.qty_details}>
                     <Select

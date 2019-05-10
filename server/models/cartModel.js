@@ -6,7 +6,7 @@ var CartSchema = mongoose.Schema({
     totalPrice: Number,
     deliveryCharge: Number,
     billAmount: Number,
-    account: { type: Schema.Types.ObjectId, ref: 'Account' },
+    account: String,
     guest: String
 });
 

@@ -9,6 +9,7 @@ import Badge from '@material-ui/core/Badge';
 import { fade } from '@material-ui/core/styles/colorManipulator';
 import { withStyles } from '@material-ui/core/styles';
 import HomeIcon from '@material-ui/icons/Home';
+import List from '@material-ui/icons/List';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import ShoppingCart from '@material-ui/icons/ShoppingCart';
 import { connect } from "react-redux";
@@ -69,6 +70,17 @@ const styles = theme => ({
     }
 });
 
+class WishListIcon extends Component {
+    render() {
+        return (
+            <Link to="/wishlist">
+                <IconButton color="inherit">
+                    <List />
+                </IconButton>
+            </Link>);
+    }
+}
+
 class NavigationBar extends Component {
     componentDidMount() {
         this.props.dispatch(getCartCount('123456'))
@@ -79,6 +91,8 @@ class NavigationBar extends Component {
     };
 
     render() {
+
+
         const { classes } = this.props;
         const cartItemCount = this.props.cartCount ? this.props.cartCount : 0;
         return (
@@ -105,6 +119,7 @@ class NavigationBar extends Component {
                         </Link>
                         <div className={classes.grow} />
                         <div className={classes.sectionDesktop}>
+                            {this.props.auth.isAuthenticated ? <WishListIcon /> : null}
                             <Link to="/cart">
                                 <IconButton color="inherit">
                                     <Badge badgeContent={cartItemCount} color="secondary">
@@ -132,6 +147,7 @@ NavigationBar.propTypes = {
 const mapStateToProps = state => {
     return {
         cartCount: state.cartCountReducer.count,
+        auth: state.auth
     };
 }
 
