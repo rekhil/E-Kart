@@ -82,17 +82,27 @@ class WishListIcon extends Component {
 }
 
 class NavigationBar extends Component {
+
+    constructor() {
+        super();
+        this.state = {
+            searchText: ""
+        };
+    }
+
     componentDidMount() {
         this.props.dispatch(getCartCount('123456'))
     }
 
     handleSearchProducts = event => {
-        this.props.dispatch(searchProducts())
+        this.props.dispatch(searchProducts(this.state.searchText))
+    };
+
+    handleSearchTextChange = event => {
+        this.setState({ searchText: event.target.value })
     };
 
     render() {
-
-
         const { classes } = this.props;
         const cartItemCount = this.props.cartCount ? this.props.cartCount : 0;
         return (
@@ -106,11 +116,7 @@ class NavigationBar extends Component {
                         </Link>
                         <Typography className={classes.title} variant="h6" color="inherit" noWrap> E-Kart </Typography>
                         <div className={classes.search}>
-                            <InputBase
-                                classes={{
-                                    root: classes.inputRoot
-                                }}
-                            />
+                            <InputBase classes={{ root: classes.inputRoot }} onChange={this.handleSearchTextChange} />
                         </div>
                         <Link to="/products">
                             <Fab color="primary" aria-label="Add" className={classes.fab} onClick={this.handleSearchProducts}>

@@ -1,16 +1,13 @@
 import axios from "axios";
 import { conf } from '../config.js';
+import { SEARCH_PRODUCT, GET_ERRORS } from "./types";
 
-export function searchProducts(searchString) {
-    return function (dispatch) {
-        axios({
-            method: 'GET',
-            url: `${conf.baseUrl}products`,
-            headers: { 'Access-Control-Allow-Origin': '*' }
-        }).then(function (response) {
-            dispatch({ type: "SEARCH_PRODUCT", payload: response.data.data })
-        }).catch(function (error) {
-            console.log(error)
-        });
-    }
-}
+// search products by searchText
+export const searchProducts = (searchText) => dispatch => {
+    axios
+        .post(`${conf.baseUrl}products/search`, { searchText: searchText })
+        .then(response => {
+            dispatch({ type: SEARCH_PRODUCT, payload: response.data.data })
+        })
+        .catch(err => dispatch({ type: GET_ERRORS, payload: err }));
+};

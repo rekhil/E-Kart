@@ -22,6 +22,32 @@ exports.viewall = function (req, res) {
         });
 };
 
+exports.searchByText = function (req, res) {
+    Product.find({
+        $or: [
+            { displayName: { $regex: '.*' + req.body.searchText + '.*', $options: 'i' } },
+            { shortDesc: { $regex: '.*' + req.body.searchText + '.*', $options: 'i' } },
+            { desc: { $regex: '.*' + req.body.searchText + '.*', $options: 'i' } }
+        ]
+    })
+        .populate('category')
+        .populate('deals')
+        .populate('review')
+        .exec(function (err, products) {
+            if (err) {
+                res.json({
+                    status: "error",
+                    message: err,
+                });
+            }
+            res.json({
+                status: "success",
+                message: "Products retrieved successfully",
+                data: products
+            });
+        });
+};
+
 exports.create = function (req, res) {
     var product = new Product();
     product.image = req.body.image;

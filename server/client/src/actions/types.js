@@ -3,4 +3,5 @@ export const SET_CURRENT_USER = "SET_CURRENT_USER";
 export const CART_DETAILS = "CART_DETAILS";
 export const CART_COUNT = "CART_COUNT";
 export const WISHLIST_DETAILS = "WISHLIST_DETAILS";
+export const SEARCH_PRODUCT = "SEARCH_PRODUCT";
 

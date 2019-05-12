@@ -19,6 +19,8 @@ var productController = require('./controller/productController');
 router.route('/products')
     .get(productController.viewall)
     .post(productController.create);
+router.route('/products/search')
+    .post(productController.searchByText);
 router.route('/products/:product_id')
     .get(productController.view)
     .patch(productController.update)
