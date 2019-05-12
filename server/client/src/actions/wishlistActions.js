@@ -21,13 +21,3 @@ export const deleteWishlistDetails = (wishlistId, productId) => dispatch => {
         })
         .catch(err => dispatch({ type: GET_ERRORS, payload: err }));
 };
-
-// Add new product to wishlist
-export const addToCartDetails = (wishlistData) => dispatch => {
-    axios
-        .post(`${conf.baseUrl}wishlist`, wishlistData)
-        .then(response => {
-            dispatch({ type: WISHLIST_DETAILS, payload: response.data.data })
-        })
-        .catch(err => console.log(err));
-};

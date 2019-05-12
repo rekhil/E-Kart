@@ -87,9 +87,6 @@ class ProductDetails extends Component {
         const data = {
             productId: this.state.product._id,
             quantity: this.state.quantity,
-            price: this.state.product.price,
-            offerPrice: this.state.product.offerPrice,
-            deliveryCharge: this.state.product.deliveryCharge,
             accountId: this.props.auth.isAuthenticated ? this.props.auth.email : null,
             guestId: '123456'
         }

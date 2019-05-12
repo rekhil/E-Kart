@@ -24,7 +24,7 @@ router.route('/products/search')
 router.route('/products/deals')
     .get(productController.getDeals);
 router.route('/products/recommendations')
-    .get(productController.getRecommendations);
+    .post(productController.getRecommendations);
 router.route('/products/:product_id')
     .get(productController.view)
     .patch(productController.update)
@@ -53,5 +53,9 @@ router.route('/wishlist/:wishlistId/:productId')
     .delete(wishlistController.delete);
 router.route('/wishlist/:email')
     .get(wishlistController.view);
+
+var orderController = require('./controller/orderController');
+router.route('/order')
+    .post(orderController.create)
 
 module.exports = router;

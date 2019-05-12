@@ -3,9 +3,6 @@ const Schema = mongoose.Schema;
 
 var CartSchema = mongoose.Schema({
     items: [{ type: Schema.Types.ObjectId, ref: 'CartItem' }],
-    totalPrice: Number,
-    deliveryCharge: Number,
-    billAmount: Number,
     account: String,
     guest: String
 });

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from "axios";
 import { conf } from '../config';
+import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import ItemsCarousel from 'react-items-carousel';
@@ -42,7 +43,7 @@ class Home extends Component {
             .catch(err => console.log(err));
 
         axios
-            .get(`${conf.baseUrl}products/recommendations`)
+            .post(`${conf.baseUrl}products/recommendations`, { email: this.props.auth.email })
             .then(response => {
                 this.setState({
                     recommendChildren: response.data.data.map(product => <ProductThumbnail key={product._id} product={product} />)
@@ -71,20 +72,32 @@ class Home extends Component {
                         {dealChildren}
                     </ItemsCarousel>
                 </Card>
-                <Card className={classes.card}>
-                    <div className={classes.cartHeader}> <b> Recommendations For You </b></div >
-                </Card>
-                <Card className={classes.carousel_card}>
-                    <ItemsCarousel
-                        numberOfCards={3} gutter={12} showSlither={true} firstAndLastGutter={true} freeScrolling={false}
-                        requestToChangeActive={this.changeActiveReccomendItem} activeItemIndex={recommendActiveItemIndex} activePosition={'center'}
-                        chevronWidth={24} rightChevron={'>'} leftChevron={'<'} outsideChevron={false}>
-                        {recommendChildren}
-                    </ItemsCarousel>
-                </Card>
+                {this.props.auth.isAuthenticated ?
+                    <div>
+                        <Card className={classes.card}>
+                            <div className={classes.cartHeader}> <b> Recommendations For You </b></div >
+                        </Card>
+                        <Card className={classes.carousel_card}>
+                            <ItemsCarousel
+                                numberOfCards={3} gutter={12} showSlither={true} firstAndLastGutter={true} freeScrolling={false}
+                                requestToChangeActive={this.changeActiveReccomendItem} activeItemIndex={recommendActiveItemIndex} activePosition={'center'}
+                                chevronWidth={24} rightChevron={'>'} leftChevron={'<'} outsideChevron={false}>
+                                {recommendChildren}
+                            </ItemsCarousel>
+                        </Card>
+                    </div>
+                    : null
+                }
             </div>
         )
     }
 }
 
-export default withStyles(styles, { withTheme: true })(Home);
+const mapStateToProps = state => {
+    return {
+        auth: state.auth,
+        errors: state.errors
+    };
+}
+
+export default withStyles(styles, { withTheme: true })(connect(mapStateToProps)(Home));

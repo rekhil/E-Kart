@@ -1,5 +1,7 @@
 Product = require('../models/productModel');
 Review = require('../models/reviewModel');
+Order = require('../models/orderModel');
+OrderProduct = require('../models/OrderProductModel');
 
 exports.viewall = function (req, res) {
     Product.find()
@@ -42,21 +44,43 @@ exports.getDeals = function (req, res) {
 };
 
 exports.getRecommendations = function (req, res) {
-    Product.find()
-        .populate('category')
-        .populate('review')
-        .exec(function (err, products) {
+    var queryDate = new Date();
+    queryDate.setDate(queryDate.getDate() - 30)
+    Order.find({ 'email': req.body.email, date: { $gt: queryDate } })
+        .populate('items')
+        .exec(function (err, orders) {
             if (err) {
                 res.json({
                     status: "error",
                     message: err,
                 });
             }
-            res.json({
-                status: "success",
-                message: "Products retrieved successfully",
-                data: products
+
+            var distinctProducts = []
+            orders.forEach(order => {
+                order.items.forEach(item => {
+                    if (distinctProducts.filter(s => String(s) === String(item.product)).length === 0) {
+                        distinctProducts.push(item.product);
+                    }
+                });
             });
+
+            Product.find({ '_id': { $in: distinctProducts } })
+                .populate('category')
+                .populate('review')
+                .exec(function (err, products) {
+                    if (err) {
+                        res.json({
+                            status: "error",
+                            message: err,
+                        });
+                    }
+                    res.json({
+                        status: "success",
+                        message: "Products retrieved successfully",
+                        data: products
+                    });
+                });
         });
 };
 

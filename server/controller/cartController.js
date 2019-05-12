@@ -3,9 +3,6 @@ Product = require('../models/productModel');
 CartItem = require('../models/cartItemModel');
 Category = require('../models/categoryModel');
 
-//update quantity in cart -- update cart item, update price details in cart
-//get distint item count from cart
-
 exports.create = function (req, res) {
     CartItem.findOne({ 'product': req.body.productId, 'guest': req.body.guestId }, function (err, cartitem) {
         if (err)
@@ -19,9 +16,6 @@ exports.create = function (req, res) {
             cartitem.quantity = cartitem.quantity + req.body.quantity;
         if (cartitem.quantity > 4)
             cartitem.quantity = 4
-        cartitem.price = req.body.price;
-        cartitem.offerPrice = req.body.offerPrice;
-        cartitem.deliveryCharge = req.body.deliveryCharge;
         cartitem.account = req.body.accountId;
         cartitem.guest = req.body.guestId;
         cartitem.save(function (err) {
@@ -45,10 +39,6 @@ exports.create = function (req, res) {
                     if (!cart) {
                         cart = new Cart();
                         cart.items.push(cartitem._id)
-                        //calculate price here
-                        cart.totalPrice = 1000
-                        cart.deliveryCharge = 100
-                        cart.billAmount = 1000
                         cart.account = req.body.accountId;
                         cart.guest = req.body.guestId;
                         cart.save(function (err) {
@@ -67,10 +57,6 @@ exports.create = function (req, res) {
 
                             if (!existingCartItem)
                                 cart.items.push(cartitem._id)
-                            //calculate price here
-                            cart.totalPrice = 1000
-                            cart.deliveryCharge = 100
-                            cart.billAmount = 1000
                             cart.account = req.body.accountId;
                             cart.guest = req.body.guestId;
                             cart.save(function (err) {
@@ -132,10 +118,6 @@ exports.delete = function (req, res) {
                                 res.json(err);
                             if (cart) {
                                 cart.items.remove(cartItem._id);
-                                //calculate price here
-                                cart.totalPrice = 1000
-                                cart.deliveryCharge = 100
-                                cart.billAmount = 1000
                                 cart.save(function (err) {
                                     if (err)
                                         res.json(err);
@@ -227,10 +209,6 @@ exports.update = function (req, res) {
                     .exec(function (err, cart) {
                         if (err)
                             res.json(err);
-                        //calculate price here
-                        cart.totalPrice = 1000
-                        cart.deliveryCharge = 100
-                        cart.billAmount = 1000
                         cart.save(function (err) {
                             if (err)
                                 res.json(err);
