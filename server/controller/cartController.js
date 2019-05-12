@@ -44,11 +44,27 @@ exports.create = function (req, res) {
                         cart.save(function (err) {
                             if (err)
                                 res.json(err);
-                            res.json({
-                                status: "success",
-                                message: 'Cart updated!',
-                                data: cart
-                            });
+                            Cart.findOne({ 'guest': req.body.guestId })
+                                .populate({
+                                    path: 'items',
+                                    populate: {
+                                        path: 'product',
+                                        model: 'Product',
+                                        populate: {
+                                            path: 'category',
+                                            model: 'Category'
+                                        }
+                                    }
+                                })
+                                .exec(function (err, cartResponse) {
+                                    if (err)
+                                        res.json(err);
+                                    res.json({
+                                        status: "success",
+                                        message: 'Cart updated!',
+                                        data: cartResponse
+                                    });
+                                });
                         });
                     } else {
                         Cart.findOne({ 'guest': req.body.guestId, items: { $elemMatch: { $in: cartitem._id } } }, function (err, existingCartItem) {

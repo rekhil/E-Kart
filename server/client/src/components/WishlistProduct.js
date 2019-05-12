@@ -91,7 +91,6 @@ class WishlistProduct extends Component {
                     </CardContent>
                     <CardActions>
                         <Button size="small" color="primary" onClick={this.handleRemoveFromWishlist}> Remove from wishlist </Button>
-                        <Button size="small" color="primary" onClick={this.handleAddToCart}> Save for later </Button>
                     </CardActions>
                 </div >
             </Card>

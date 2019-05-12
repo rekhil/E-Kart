@@ -140,7 +140,6 @@ class CartProduct extends Component {
                     </CardContent>
                     <CardActions>
                         <Button size="small" color="primary" onClick={this.handleRemoveCart}> Remove from cart </Button>
-                        <Button size="small" color="primary" onClick={this.handleSaveForLater}> Save for later </Button>
                     </CardActions>
                 </div >
                 <div className={classes.price_details}>

@@ -140,54 +140,62 @@ class ProductDetails extends Component {
             }
             view =
                 (
-                    <Card className={classes.card}>
-                        <CardMedia
-                            className={classes.cover}
-                            image={this.state.product.image}
-                            title={this.state.product.displayName} />
-                        <div className={classes.details}>
-                            <CardContent className={classes.content}>
-                                <label className={classes.productName}>
-                                    {this.state.product.displayName}
-                                </label>
-                                <Typography variant="subtitle1" color="textSecondary">
-                                    {this.state.product.category.name}
-                                </Typography>
-                                <Typography component="p">
-                                    {this.state.product.shortDesc}
-                                </Typography>
-                                <Typography component="p">
-                                    {this.state.product.desc}
-                                </Typography>
-                                <Typography component="p">
-                                    {priceText}
-                                </Typography>
-                                <Typography component="p">
-                                    Price: ₹{offerPrice}
-                                </Typography>
-                            </CardContent>
-                        </div >
-                        <div className={classes.right_portion}>
-                            <Card className={classes.card}>
-                                <div className={classes.details}>
-                                    <div className={classes.card}>
-                                        <Typography variant="subtitle1" color="textSecondary">Quantity</Typography>
-                                        <Select
-                                            value={this.state.quantity}
-                                            onChange={this.handleChange}
-                                            input={<BootstrapInput name="quantity" id="quantity-customized-select" />}>
-                                            <MenuItem value={1}>1</MenuItem>
-                                            <MenuItem value={2}>2</MenuItem>
-                                            <MenuItem value={3}>3</MenuItem>
-                                            <MenuItem value={4}>4</MenuItem>
-                                        </Select>
-                                    </div>
-                                    <Button variant="contained" color="primary" className={classes.button} onClick={this.handleAddToCart}>Add to cart</Button>
-                                    {this.props.auth.isAuthenticated ? <Button variant="contained" color="primary" className={classes.button} onClick={this.handleAddToWishList}>Add to wishlist</Button> : null}
-                                </div >
-                            </Card>
-                        </div >
-                    </Card>
+                    <div>
+                        <Card className={classes.card}>
+                            <CardMedia
+                                className={classes.cover}
+                                image={this.state.product.image}
+                                title={this.state.product.displayName} />
+                            <div className={classes.details}>
+                                <CardContent className={classes.content}>
+                                    <label className={classes.productName}>
+                                        {this.state.product.displayName}
+                                    </label>
+                                    <Typography variant="subtitle1" color="textSecondary">
+                                        {this.state.product.category.name}
+                                    </Typography>
+                                    <Typography component="p">
+                                        {this.state.product.shortDesc}
+                                    </Typography>
+                                    <Typography component="p">
+                                        {this.state.product.desc}
+                                    </Typography>
+                                    <Typography component="p">
+                                        {priceText}
+                                    </Typography>
+                                    <Typography component="p">
+                                        Price: ₹{offerPrice}
+                                    </Typography>
+                                </CardContent>
+                            </div >
+                            <div className={classes.right_portion}>
+                                <Card className={classes.card}>
+                                    <div className={classes.details}>
+                                        <div className={classes.card}>
+                                            <Typography variant="subtitle1" color="textSecondary">Quantity</Typography>
+                                            <Select
+                                                value={this.state.quantity}
+                                                onChange={this.handleChange}
+                                                input={<BootstrapInput name="quantity" id="quantity-customized-select" />}>
+                                                <MenuItem value={1}>1</MenuItem>
+                                                <MenuItem value={2}>2</MenuItem>
+                                                <MenuItem value={3}>3</MenuItem>
+                                                <MenuItem value={4}>4</MenuItem>
+                                            </Select>
+                                        </div>
+                                        <Button variant="contained" color="primary" className={classes.button} onClick={this.handleAddToCart}>Add to cart</Button>
+                                        {this.props.auth.isAuthenticated ? <Button variant="contained" color="primary" className={classes.button} onClick={this.handleAddToWishList}>Add to wishlist</Button> : null}
+                                    </div >
+                                </Card>
+                            </div >
+                        </Card>
+                        <Card className={classes.card}>
+                            <div className={classes.cartHeader}> <b> Customer Reviews </b></div >
+                        </Card>
+                        <Card className={classes.card}>
+                            <div className={classes.cartHeader}> No reviews yet </div >
+                        </Card>
+                    </div >
                 )
         }
         return view;
