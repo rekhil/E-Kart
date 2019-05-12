@@ -95,14 +95,26 @@ class CartProduct extends Component {
     };
 
     render() {
-        const productUrl = `/products/${this.props.product.product._id}`
         const { classes } = this.props;
+        const productUrl = `/products/${this.props.product.product._id}`
+
         var priceText = `MRP: ₹${this.props.product.product.price.toFixed(2)}`
         this.props.product.product.offerPrice = this.props.product.product.price.toFixed(2);
         if (this.props.product.product.discount && this.props.product.product.discount > 0) {
-            priceText = `MRP: ₹${this.props.product.product.price.toFixed(2)}  Discount: ${this.props.product.product.discount}%`
+            priceText = `MRP: ₹${this.props.product.product.price.toFixed(2)} Discount: ${this.props.product.product.discount}%`
             this.props.product.product.offerPrice = (parseFloat(this.props.product.product.price) -
                 (parseFloat(this.props.product.product.price) * (parseFloat(this.props.product.product.discount) / 100))).toFixed(2);
+        }
+
+        var todayDate = new Date();
+        if (this.props.product.product.deals && this.props.product.product.deals.length > 0) {
+            var todaysDeal = this.props.product.product.deals.find(s => s.date === `${todayDate.getFullYear()}/${todayDate.getMonth() + 1}/${todayDate.getDate()}`)
+            if (todaysDeal) {
+                priceText = `MRP: ₹${this.props.product.product.price.toFixed(2)} Discount (Today's deal): ${todaysDeal.discount}%`
+
+                this.props.product.product.offerPrice = (parseFloat(this.props.product.product.price) -
+                    (parseFloat(this.props.product.product.price) * (parseFloat(todaysDeal.discount) / 100))).toFixed(2);
+            }
         }
 
         return (

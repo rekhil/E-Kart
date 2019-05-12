@@ -57,10 +57,18 @@ class CartDetails extends Component {
             this.props.cart.billAmount = 0;
             this.props.cart.items.forEach(element => {
                 if (element && element.product && element.product.price && element.product.price > 0) {
+                    var billAmount = this.props.cart.billAmount;
                     if (element.product.discount && element.product.discount > 0) {
                         this.props.cart.billAmount += ((parseFloat(element.product.price) - (parseFloat(element.product.price) * (parseFloat(element.product.discount) / 100))) * element.quantity)
                     } else {
                         this.props.cart.billAmount += (parseFloat(element.product.price) * element.quantity)
+                    }
+                    var todayDate = new Date();
+                    if (element.product.deals && element.product.deals.length > 0) {
+                        var todaysDeal = element.product.deals.find(s => s.date === `${todayDate.getFullYear()}/${todayDate.getMonth() + 1}/${todayDate.getDate()}`)
+                        if (todaysDeal) {
+                            this.props.cart.billAmount = billAmount + ((parseFloat(element.product.price) - (parseFloat(element.product.price) * (parseFloat(todaysDeal.discount) / 100))) * element.quantity)
+                        }
                     }
                 }
                 if (element && element.product && element.product.deliveryCharge && element.product.deliveryCharge > 0) {

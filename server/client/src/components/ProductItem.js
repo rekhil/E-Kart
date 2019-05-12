@@ -48,7 +48,15 @@ class ProductItem extends Component {
             this.props.product.offerPrice = (parseFloat(this.props.product.price) -
                 (parseFloat(this.props.product.price) * (parseFloat(this.props.product.discount) / 100))).toFixed(2);
         }
-
+        var todayDate = new Date();
+        if (this.props.product.deals && this.props.product.deals.length > 0) {
+            var todaysDeal = this.props.product.deals.find(s => s.date === `${todayDate.getFullYear()}/${todayDate.getMonth() + 1}/${todayDate.getDate()}`)
+            if (todaysDeal) {
+                priceText = `MRP: ₹${this.props.product.price.toFixed(2)}  Discount (Today's deal): ${todaysDeal.discount}%`
+                this.props.product.offerPrice = (parseFloat(this.props.product.price) -
+                    (parseFloat(this.props.product.price) * (parseFloat(todaysDeal.discount) / 100))).toFixed(2);
+            }
+        }
         return (
             <Card className={classes.card}>
                 <CardMedia

@@ -132,7 +132,15 @@ class ProductDetails extends Component {
                 offerPrice = (parseFloat(this.state.product.price) -
                     (parseFloat(this.state.product.price) * (parseFloat(this.state.product.discount) / 100))).toFixed(2);
             }
-
+            var todayDate = new Date();
+            if (this.state.product.deals && this.state.product.deals.length > 0) {
+                var todaysDeal = this.state.product.deals.find(s => s.date === `${todayDate.getFullYear()}/${todayDate.getMonth() + 1}/${todayDate.getDate()}`)
+                if (todaysDeal) {
+                    priceText = `MRP: ₹${this.state.product.price.toFixed(2)}  Discount (Today's deal): ${todaysDeal.discount}%`
+                    offerPrice = (parseFloat(this.state.product.price) -
+                        (parseFloat(this.state.product.price) * (parseFloat(todaysDeal.discount) / 100))).toFixed(2);
+                }
+            }
             view =
                 (
                     <Card className={classes.card}>
