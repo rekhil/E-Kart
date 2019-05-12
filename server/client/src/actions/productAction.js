@@ -1,6 +1,6 @@
 import axios from "axios";
 import { conf } from '../config.js';
-import { SEARCH_PRODUCT, GET_ERRORS } from "./types";
+import { SEARCH_PRODUCT, DEALS_PRODUCT, RECOMMENTED_PRODUCT, GET_ERRORS } from "./types";
 
 // search products by searchText
 export const searchProducts = (searchText) => dispatch => {

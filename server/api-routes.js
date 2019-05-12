@@ -21,15 +21,15 @@ router.route('/products')
     .post(productController.create);
 router.route('/products/search')
     .post(productController.searchByText);
+router.route('/products/deals')
+    .get(productController.getDeals);
+router.route('/products/recommendations')
+    .get(productController.getRecommendations);
 router.route('/products/:product_id')
     .get(productController.view)
     .patch(productController.update)
     .put(productController.update)
     .delete(productController.delete);
-
-var dealsController = require('./controller/dealsController');
-router.route('/deals')
-    .post(dealsController.create);
 
 var categoryController = require('./controller/categoryController');
 router.route('/categories')

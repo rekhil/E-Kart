@@ -1,11 +1,49 @@
 Product = require('../models/productModel');
 Review = require('../models/reviewModel');
-Deals = require('../models/dealsModel');
 
 exports.viewall = function (req, res) {
     Product.find()
         .populate('category')
-        .populate('deals')
+        .populate('review')
+        .exec(function (err, products) {
+            if (err) {
+                res.json({
+                    status: "error",
+                    message: err,
+                });
+            }
+            res.json({
+                status: "success",
+                message: "Products retrieved successfully",
+                data: products
+            });
+        });
+};
+
+exports.getDeals = function (req, res) {
+    var today = new Date();
+    Product.find({ 'deals.date': { $eq: `${today.getFullYear()}/${today.getMonth() + 1}/${today.getDate()}` } })
+        .populate('category')
+        .populate('review')
+        .exec(function (err, products) {
+            if (err) {
+                res.json({
+                    status: "error",
+                    message: err,
+                });
+            }
+
+            res.json({
+                status: "success",
+                message: "Products retrieved successfully",
+                data: products
+            });
+        });
+};
+
+exports.getRecommendations = function (req, res) {
+    Product.find()
+        .populate('category')
         .populate('review')
         .exec(function (err, products) {
             if (err) {
@@ -31,7 +69,6 @@ exports.searchByText = function (req, res) {
         ]
     })
         .populate('category')
-        .populate('deals')
         .populate('review')
         .exec(function (err, products) {
             if (err) {
@@ -76,7 +113,6 @@ exports.create = function (req, res) {
 exports.view = function (req, res) {
     Product.findById(req.params.product_id)
         .populate('category')
-        .populate('deals')
         .populate('review')
         .exec(function (err, product) {
             if (err)

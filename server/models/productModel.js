@@ -12,7 +12,7 @@ var ProductSchema = mongoose.Schema({
     deliveryCharge: Number,
     avgRating: Number,
     category: { type: Schema.Types.ObjectId, ref: 'Category' },
-    deals: [{ type: Schema.Types.ObjectId, ref: 'Deals' }],
+    deals: [],
     review: [{ type: Schema.Types.ObjectId, ref: 'Review' }],
 });
 
