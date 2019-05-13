@@ -58,7 +58,8 @@ exports.login = function (req, res) {
                 // Create JWT Payload
                 const payload = {
                     id: account.id,
-                    name: account.name
+                    name: account.name,
+                    email: account.email
                 };
                 // Sign token
                 jwt.sign(
