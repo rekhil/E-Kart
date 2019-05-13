@@ -7,7 +7,7 @@ var OrderSchema = mongoose.Schema({
     deliveryCharges: Number,
     billAmount: Number,
     date: Date,
-    email: String
+    account: { type: Schema.Types.ObjectId, ref: 'Account' }
 });
 
 module.exports = mongoose.model('order', OrderSchema);

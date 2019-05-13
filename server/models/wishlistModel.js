@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 var WishlistSchema = mongoose.Schema({
     items: [{ type: Schema.Types.ObjectId, ref: 'Product' }],
-    email: String
+    account: { type: Schema.Types.ObjectId, ref: 'Account' }
 });
 
 module.exports = mongoose.model('Wishlist', WishlistSchema);

@@ -3,9 +3,9 @@ import { conf } from '../config.js';
 import { WISHLIST_DETAILS, GET_ERRORS } from "./types";
 
 // get wishlist details
-export const getWishlistDetails = (email) => dispatch => {
+export const getWishlistDetails = () => dispatch => {
     axios
-        .get(`${conf.baseUrl}wishlist/${email}`)
+        .get(`${conf.baseUrl}wishlist`)
         .then(response => {
             dispatch({ type: WISHLIST_DETAILS, payload: response.data.data })
         })
@@ -13,9 +13,9 @@ export const getWishlistDetails = (email) => dispatch => {
 };
 
 // delete product from wishlist
-export const deleteWishlistDetails = (wishlistId, productId) => dispatch => {
+export const deleteWishlistDetails = (productId) => dispatch => {
     axios
-        .delete(`${conf.baseUrl}wishlist/${wishlistId}/${productId}`)
+        .delete(`${conf.baseUrl}wishlist/${productId}`)
         .then(response => {
             dispatch({ type: WISHLIST_DETAILS, payload: response.data.data })
         })

@@ -43,7 +43,7 @@ class Home extends Component {
             .catch(err => console.log(err));
 
         axios
-            .post(`${conf.baseUrl}products/recommendations`, { email: this.props.auth.email })
+            .get(`${conf.baseUrl}products/recommendations`)
             .then(response => {
                 this.setState({
                     recommendChildren: response.data.data.map(product => <ProductThumbnail key={product._id} product={product} />)

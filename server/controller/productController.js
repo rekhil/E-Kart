@@ -2,6 +2,7 @@ Product = require('../models/productModel');
 Review = require('../models/reviewModel');
 Order = require('../models/orderModel');
 OrderProduct = require('../models/OrderProductModel');
+const jwt = require("jsonwebtoken");
 
 exports.viewall = function (req, res) {
     Product.find()
@@ -46,7 +47,8 @@ exports.getDeals = function (req, res) {
 exports.getRecommendations = function (req, res) {
     var queryDate = new Date();
     queryDate.setDate(queryDate.getDate() - 30)
-    Order.find({ 'email': req.body.email, date: { $gt: queryDate } })
+    const decoded = jwt.decode(req.headers.authorization);
+    Order.find({ 'account': decoded.id, date: { $gt: queryDate } })
         .populate('items')
         .exec(function (err, orders) {
             if (err) {

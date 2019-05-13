@@ -87,7 +87,6 @@ class ProductDetails extends Component {
         const data = {
             productId: this.state.product._id,
             quantity: this.state.quantity,
-            accountId: this.props.auth.isAuthenticated ? this.props.auth.email : null,
             guestId: '123456'
         }
 
@@ -95,19 +94,10 @@ class ProductDetails extends Component {
     }
 
     handleAddToWishList = () => {
-        const data = {
-            productId: this.state.product._id,
-            email: this.props.auth.email
-        }
-
-        axios({
-            method: 'POST',
-            url: `${conf.baseUrl}wishlist`,
-            headers: { "Content-Type": "application/json" },
-            data: data
-        }).then((response) => {
-        }).catch((error) => {
-        });
+        axios
+            .post(`${conf.baseUrl}wishlist`, { productId: this.state.product._id })
+            .then(response => { })
+            .catch(err => { });
     }
 
     handleChange = event => {

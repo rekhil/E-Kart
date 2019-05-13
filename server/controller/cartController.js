@@ -2,6 +2,7 @@ Cart = require('../models/cartModel');
 Product = require('../models/productModel');
 CartItem = require('../models/cartItemModel');
 Category = require('../models/categoryModel');
+const jwt = require("jsonwebtoken");
 
 exports.create = function (req, res) {
     CartItem.findOne({ 'product': req.body.productId, 'guest': req.body.guestId }, function (err, cartitem) {
@@ -16,7 +17,7 @@ exports.create = function (req, res) {
             cartitem.quantity = cartitem.quantity + req.body.quantity;
         if (cartitem.quantity > 4)
             cartitem.quantity = 4
-        cartitem.account = req.body.accountId;
+        cartitem.account = req.headers.authorization ? jwt.decode(req.headers.authorization).id : null;
         cartitem.guest = req.body.guestId;
         cartitem.save(function (err) {
             if (err)
@@ -39,7 +40,7 @@ exports.create = function (req, res) {
                     if (!cart) {
                         cart = new Cart();
                         cart.items.push(cartitem._id)
-                        cart.account = req.body.accountId;
+                        cart.account = req.headers.authorization ? jwt.decode(req.headers.authorization).id : null;
                         cart.guest = req.body.guestId;
                         cart.save(function (err) {
                             if (err)
@@ -73,7 +74,7 @@ exports.create = function (req, res) {
 
                             if (!existingCartItem)
                                 cart.items.push(cartitem._id)
-                            cart.account = req.body.accountId;
+                            cart.account = req.headers.authorization ? jwt.decode(req.headers.authorization).id : null;
                             cart.guest = req.body.guestId;
                             cart.save(function (err) {
                                 if (err)

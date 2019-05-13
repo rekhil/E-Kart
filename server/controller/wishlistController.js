@@ -1,14 +1,16 @@
 Wishlist = require('../models/wishlistModel');
 Product = require('../models/productModel');
+const jwt = require("jsonwebtoken");
 
 exports.create = function (req, res) {
-    Wishlist.findOne({ 'email': req.body.email }, function (err, wishlist) {
+    const decoded = jwt.decode(req.headers.authorization);
+    Wishlist.findOne({ 'account': decoded.id }, function (err, wishlist) {
         if (err)
             res.json(err);
         if (!wishlist) {
             wishlist = new Wishlist();
             wishlist.items.push(req.body.productId)
-            wishlist.email = req.body.email
+            wishlist.account = decoded.id
             wishlist.save(function (err) {
                 if (err)
                     res.json(err);
@@ -36,7 +38,7 @@ exports.create = function (req, res) {
                     });
             });
         } else {
-            Wishlist.findOne({ 'email': req.body.email, items: { $elemMatch: { $in: req.body.productId } } }, function (err, wishlistItem) {
+            Wishlist.findOne({ 'account': decoded.id, items: { $elemMatch: { $in: req.body.productId } } }, function (err, wishlistItem) {
                 if (err)
                     res.json(err);
                 if (!wishlistItem) {
@@ -80,7 +82,8 @@ exports.create = function (req, res) {
 };
 
 exports.view = function (req, res) {
-    Wishlist.findOne({ email: req.params.email })
+    const decoded = jwt.decode(req.headers.authorization);
+    Wishlist.findOne({ account: decoded.id })
         .populate({
             path: 'items',
             populate: {
@@ -100,7 +103,8 @@ exports.view = function (req, res) {
 };
 
 exports.delete = function (req, res) {
-    Wishlist.findOne({ _id: req.params.wishlistId })
+    const decoded = jwt.decode(req.headers.authorization);
+    Wishlist.findOne({ account: decoded.id })
         .populate({
             path: 'items',
             populate: {
@@ -116,7 +120,7 @@ exports.delete = function (req, res) {
             if (err)
                 res.send(err);
             if (wishlist) {
-                Wishlist.findOne({ _id: req.params.wishlistId, items: { $elemMatch: { $in: req.params.productId } } })
+                Wishlist.findOne({ account: decoded.id, items: { $elemMatch: { $in: req.params.productId } } })
                     .populate({
                         path: 'items',
                         populate: {
@@ -153,8 +157,7 @@ exports.delete = function (req, res) {
             } else {
                 res.json({
                     status: "failed",
-                    message: 'No data found',
-                    data: req.params.wishlistId
+                    message: 'No data found'
                 });
             }
         });

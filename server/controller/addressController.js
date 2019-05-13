@@ -1,13 +1,15 @@
 Address = require('../models/addressModel');
+const jwt = require("jsonwebtoken");
 
 exports.create = function (req, res) {
+    const decoded = jwt.decode(req.headers.authorization);
     var address = new Address();
     address.address = req.body.address;
     address.city = req.body.city;
     address.state = req.body.state;
     address.pincode = req.body.pincode;
     address.phoneNumber = req.body.phoneNumber;
-    address.account = req.body.accountId;
+    address.account = decoded.id;
     address.save(function (err) {
         if (err)
             res.json(err);
@@ -63,7 +65,8 @@ exports.view = function (req, res) {
 };
 
 exports.viewAll = function (req, res) {
-    Address.find({ 'account': req.params.account_id }, function (err, address) {
+    const decoded = jwt.decode(req.headers.authorization);
+    Address.find({ 'account': decoded.id }, function (err, address) {
         if (err)
             res.send(err);
         res.json({

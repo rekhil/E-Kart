@@ -36,7 +36,7 @@ const styles = theme => ({
 class WishlistProduct extends Component {
 
     handleRemoveFromWishlist = () => {
-        this.props.dispatch(deleteWishlistDetails(this.props.wishListId, this.props.product._id))
+        this.props.dispatch(deleteWishlistDetails(this.props.product._id))
     }
 
     handleAddToCart = () => {

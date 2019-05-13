@@ -27,7 +27,7 @@ class WistlistDetails extends Component {
         if (!this.props.auth.isAuthenticated) {
             this.props.history.push("/");
         }
-        this.props.dispatch(getWishlistDetails(this.props.auth.email));
+        this.props.dispatch(getWishlistDetails());
     }
 
     render() {

@@ -24,7 +24,7 @@ router.route('/products/search')
 router.route('/products/deals')
     .get(productController.getDeals);
 router.route('/products/recommendations')
-    .post(productController.getRecommendations);
+    .get(productController.getRecommendations);
 router.route('/products/:product_id')
     .get(productController.view)
     .patch(productController.update)
@@ -48,11 +48,10 @@ router.route('/cartitem/:cartItemId')
 
 var wishlistController = require('./controller/wishlistController');
 router.route('/wishlist')
-    .post(wishlistController.create);
-router.route('/wishlist/:wishlistId/:productId')
-    .delete(wishlistController.delete);
-router.route('/wishlist/:email')
+    .post(wishlistController.create)
     .get(wishlistController.view);
+router.route('/wishlist/:productId')
+    .delete(wishlistController.delete);
 
 var orderController = require('./controller/orderController');
 router.route('/order')
